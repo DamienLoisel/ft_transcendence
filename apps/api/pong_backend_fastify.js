@@ -150,19 +150,33 @@ fastify.register(async function (fastify) {
   // Connexion
   fastify.post('/api/auth/login', async (request, reply) => {
     const { username, password } = request.body;
+    console.log('--- Tentative de connexion ---');
+    console.log('Données reçues:', { username, password });
 
     if (!username || !password) {
-      return reply.code(400).send({ error: 'Nom d\'utilisateur et mot de passe requis' });
+      console.log('Champs manquants');
+      return reply.code(400).send({ error: "Nom d'utilisateur et mot de passe requis" });
     }
 
     try {
       const user = db.prepare('SELECT * FROM users WHERE username = ? OR email = ?').get(username, username);
+      console.log('Utilisateur trouvé en DB:', user);
 
-      if (!user || !await bcrypt.compare(password, user.password_hash)) {
+      if (!user) {
+        console.log('Aucun utilisateur correspondant');
+        return reply.code(401).send({ error: 'Identifiants invalides' });
+      }
+
+      // Test manuel de comparaison bcrypt
+      const bcryptTest = await bcrypt.compare(password, user.password_hash);
+      console.log('Résultat comparaison bcrypt:', bcryptTest);
+      if (!bcryptTest) {
+        console.log('Mot de passe invalide');
         return reply.code(401).send({ error: 'Identifiants invalides' });
       }
 
       const token = fastify.jwt.sign({ id: user.id, username: user.username });
+      console.log('Connexion réussie, token généré');
 
       reply.send({
         token,
@@ -176,6 +190,7 @@ fastify.register(async function (fastify) {
         }
       });
     } catch (error) {
+      console.error('Erreur lors de la connexion:', error);
       reply.code(500).send({ error: 'Erreur lors de la connexion' });
     }
   });
