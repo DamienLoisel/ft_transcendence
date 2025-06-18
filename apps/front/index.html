@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+	<meta charset="UTF-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+	<title>Menu Pong Rétro</title>
+	<script src="https://cdn.tailwindcss.com"></script>
+	<script src="script.js" defer></script>
+	<link rel="preconnect" href="https://fonts.googleapis.com">
+	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+	<link
+		href="https://fonts.googleapis.com/css2?family=Manrope:wght@200..800&family=Montserrat:ital,wght@0,100..900;1,100..900&family=Press+Start+2P&display=swap"
+		rel="stylesheet">
+</head>
+
+<body class="bg-black text-white font-mono overflow-hidden">
+
+	<header class="relative py-8">
+		<div class="absolute top-4 right-4 z-10" style="font-family: 'Press Start 2P', monospace;">
+			<button id="loginBtn"
+				class="group p-3 border border-white rounded-full bg-black hover:bg-gray-200 active:bg-gray-400 active:border-gray-500 transition-colors">
+				<span class="group-hover:text-black transition-colors">Login</span>
+			</button>
+		</div>
+
+		<h1 class="text-center text-4xl sm:text-6xl mx-4" style="font-family: 'Press Start 2P', monospace;">
+			ft_transcendence
+		</h1>
+	</header>
+
+	<main class="mt-8">
+
+		<div id="mySidenav"
+			class="fixed top-0 left-[-250px] h-full w-[250px] z-[1] bg-[#e8e8e8] pt-[60px] transition-[left] duration-500 ease-in-out">
+			<a id="closeBtn" href="#" class="absolute top-0 right-[25px] text-[36px] close">×</a>
+			<ul class="list-none p-0 m-0">
+				<li><a href="#"
+						class="block px-8 py-2 pl-8 text-[25px] text-[#818181] no-underline transition-all duration-300 hover:text-[#111]">Dashboard</a>
+				</li>
+				<li><a href="#"
+						class="block px-8 py-2 pl-8 text-[25px] text-[#818181] no-underline transition-all duration-300 hover:text-[#111]">Tournament</a>
+				</li>
+				<li><a href="#"
+						class="block px-8 py-2 pl-8 text-[25px] text-[#818181] no-underline transition-all duration-300 hover:text-[#111]">Options</a>
+				</li>
+			</ul>
+		</div>
+
+		<div class="flex flex-col justify-start">
+			<span class="burger-icon flex flex-col items-start p-3" id="openBtn"
+				style="width:fit-content;cursor:pointer;">
+				<span
+					class="w-0 h-0 border-t-[18px] border-t-transparent border-b-[18px] border-b-transparent border-l-[30px] border-l-gray-200 hover:border-l-red-500 active:scale-90 transition-transform duration-100">
+				</span>
+			</span>
+		</div>
+
+		<div class="flex flex-1 flex-col items-center justify-center">
+			<p id="playGame"
+				class="italic text-center text-2xl mx-4 hover:text-green-500 active:text-green-700 active:scale-90 cursor-pointer"
+				style="font-family: 'Press Start 2P', monospace;">Play Game</p>
+			<canvas id="pong" width="800" height="500" class="bg-black rounded shadow-lg hidden"></canvas>
+		</div>
+		<div id="pongDescription" class="mt-4 text-center text-white">
+			<p class="text-center text-1xl mx-4" style="font-family: 'Press Start 2P', monospace;">
+				Bienvenue sur Pong !<br>
+				Utilisez <b>W/S</b> pour la raquette de gauche et <b>↑/↓</b> pour la raquette de droite.<br>
+				Appuyez sur <b>Échap</b> pour quitter la partie.
+			</p>
+		</div>
+	</main>
+
+	<footer class="fixed bottom-0 left-0 mb-2 ml-4">
+		<p class="text-sm text-gray-400">Dloisel Dmathis Darcohen Jilankum</p>
+	</footer>
+
+</body>
+
+</html>

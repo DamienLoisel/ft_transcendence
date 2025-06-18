@@ -1,0 +1,11 @@
+{
+  "address": "0x88FA1EF164d08dFdA8fba7499cd286b4B370d86f",
+  "privateKey": "0x35160917abda77ba1d76cef06dd28dbdd2c9d277b2ba30e94f607c9a46c42eed",
+  "mnemonic": "slender filter duty labor butter penalty elegant such vocal wrap beef video",
+  "network": "Avalanche Fuji Testnet",
+  "chainId": 43113,
+  "rpcUrl": "https://api.avax-test.network/ext/bc/C/rpc",
+  "createdAt": "2025-06-06T21:35:41.296Z",
+  "faucetUrl": "https://faucet.avax.network/",
+  "explorerUrl": "https://testnet.snowtrace.io/address/0x88FA1EF164d08dFdA8fba7499cd286b4B370d86f"
+}
