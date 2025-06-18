@@ -172,20 +172,10 @@ if (playGame) {
 
 const loginBtn = document.getElementById('loginBtn');
 
-loginBtn?.addEventListener('click', () => {
-	// Vérifie si le formulaire existe déjà
-	if (document.getElementById('loginForm')) return;
 
-	// Crée le conteneur du formulaire
-	const formDiv = document.createElement('div');
-	formDiv.id = 'loginForm';
-	formDiv.className = 'fixed inset-0 flex items-center justify-center bg-black bg-opacity-60 z-50';
 
-	document.body.appendChild(formDiv);
-	showLoginForm();
-	// Fonction pour afficher le formulaire de connexion
-	function showLoginForm() {
-		formDiv.innerHTML = `
+function showLoginForm(formDiv: HTMLElement) {
+	formDiv.innerHTML = `
             <div class="bg-white text-black rounded-lg p-8 shadow-lg w-full max-w-xs">
                 <h2 class="text-xl font-bold mb-4 text-center">Connexion</h2>
                 <form>
@@ -197,39 +187,79 @@ loginBtn?.addEventListener('click', () => {
                 <button id="signupBtn" class="mt-2 w-full text-sm text-blue-500 hover:text-blue-700 underline">S'inscrire</button>
             </div>
         `;
-		attachEvents();
+	attachEvents(formDiv);
 
-		const loginForm = formDiv.querySelector('form');
-		loginForm?.addEventListener('submit', async (e) => {
-			e.preventDefault();
-			try {
-				const formData = new FormData(loginForm as HTMLFormElement);
-				const data = {
-					username: formData.get("username"),
-					password: formData.get("password"),
-				};
-				const response = await fetch('http://localhost:3000/api/auth/login', {
-					method: 'POST',
-					headers: { 'Content-Type': 'application/json' },
-					body: JSON.stringify(data),
-				});
-				if (response.ok) {
-					alert('Connexion réussie !');
-					formDiv.remove();
-				} else {
-					alert('Nom d\'utilisateur ou mot de passe incorrect');
+	const loginForm = formDiv.querySelector('form');
+	const errorDiv = document.createElement('div');
+	errorDiv.className = "text-red-600 text-center mb-2";
+	loginForm?.insertBefore(errorDiv, loginForm.querySelector('button[type="submit"]'));
+	loginForm?.addEventListener('submit', async (e) => {
+		e.preventDefault();
+		try {
+			const formData = new FormData(loginForm as HTMLFormElement);
+			const data = {
+				username: formData.get("username"),
+				password: formData.get("password"),
+			};
+			const response = await fetch('http://localhost:3000/api/auth/login', {
+				method: 'POST',
+				headers: { 'Content-Type': 'application/json' },
+				body: JSON.stringify(data),
+			});
+			if (response.ok) {
+				const username = data.username as string;
+				const loginBtn = document.getElementById('loginBtn');
+				if (loginBtn) {
+					// Crée un conteneur pour le nom d'utilisateur et le bouton logout
+					const userDiv = document.createElement('div');
+					userDiv.className = 'flex items-center gap-2';
+
+					const userSpan = document.createElement('span');
+					userSpan.textContent = username;
+					userSpan.className = 'text-green-600 font-bold ml-2';
+
+					const logoutBtn = document.createElement('button');
+					logoutBtn.textContent = 'Logout';
+					logoutBtn.className = 'ml-2 px-2 py-1 bg-red-500 text-white rounded hover:bg-red-700 text-sm';
+
+					logoutBtn.addEventListener('click', () => {
+						// Remplace le userDiv par le bouton login
+						const newLoginBtn = document.createElement('button');
+						newLoginBtn.id = 'loginBtn';
+						newLoginBtn.textContent = 'Login';
+						newLoginBtn.className = loginBtn.className;
+						userDiv.parentNode?.replaceChild(newLoginBtn, userDiv);
+
+						// Réattache l'event pour ouvrir le formulaire
+						newLoginBtn.addEventListener('click', () => {
+							if (document.getElementById('loginForm')) return;
+							const formDiv = document.createElement('div');
+							formDiv.id = 'loginForm';
+							formDiv.className = 'fixed inset-0 flex items-center justify-center bg-black bg-opacity-60 z-50';
+							document.body.appendChild(formDiv);
+							showLoginForm(formDiv);
+						});
+					});
+
+					userDiv.appendChild(userSpan);
+					userDiv.appendChild(logoutBtn);
+					loginBtn.replaceWith(userDiv);
 				}
-			} catch (error) {
-				alert("Erreur réseau ou serveur injoignable !");
-				console.error(error);
+				formDiv.remove();
+			} else {
+				errorDiv.textContent = "Nom d'utilisateur ou mot de passe incorrect";
 			}
-		});
+		} catch (error) {
+			alert("Erreur réseau ou serveur injoignable !");
+			console.error(error);
+		}
+	});
 
-	}
+}
 
-	// Fonction pour afficher le formulaire d'inscription
-	function showSignupForm() {
-		formDiv.innerHTML = `
+
+function showSignupForm(formDiv: HTMLElement) {
+	formDiv.innerHTML = `
             <div class="bg-white text-black rounded-lg p-8 shadow-lg w-full max-w-xs">
                 <h2 class="text-xl font-bold mb-4 text-center">Inscription</h2>
                 <form>
@@ -242,60 +272,82 @@ loginBtn?.addEventListener('click', () => {
                 <button id="backToLogin" class="mt-2 w-full text-sm text-blue-500 hover:text-blue-700 underline">Déjà un compte ? Se connecter</button>
             </div>
         `;
-		attachEvents();
+	attachEvents(formDiv);
 
-		const signupForm = formDiv.querySelector('form');
-		signupForm?.addEventListener('submit', async (e) => {
-			e.preventDefault();
-			try {
-				const formData = new FormData(signupForm as HTMLFormElement);
-				const data = {
-					username: formData.get("username"),
-					email: formData.get("email"),
-					password: formData.get("password"),
-				};
-				const response = await fetch('http://localhost:3000/api/auth/register', {
-					method: 'POST',
-					headers: { 'Content-Type': 'application/json' },
-					body: JSON.stringify(data),
+	const signupForm = formDiv.querySelector('form');
+	signupForm?.addEventListener('submit', async (e) => {
+		e.preventDefault();
+		try {
+			const formData = new FormData(signupForm as HTMLFormElement);
+			const data = {
+				username: formData.get("username"),
+				email: formData.get("email"),
+				password: formData.get("password"),
+			};
+			const response = await fetch('http://localhost:3000/api/auth/register', {
+				method: 'POST',
+				headers: { 'Content-Type': 'application/json' },
+				body: JSON.stringify(data),
+			});
+			if (response.ok) {
+				formDiv.innerHTML = `
+        <div class="bg-white text-black rounded-lg p-8 shadow-lg w-full max-w-xs text-center">
+            <h2 class="text-2xl font-bold mb-4 text-green-600">Inscription réussie !</h2>
+            <p class="mb-6">Votre compte a été créé avec succès.</p>
+            <button id="goToLogin" class="w-full bg-green-600 text-white py-2 rounded hover:bg-green-700">Se connecter</button>
+        </div>
+    `;
+				const goToLoginBtn = document.getElementById('goToLogin');
+				goToLoginBtn?.addEventListener('click', (e) => {
+					e.preventDefault();
+					showLoginForm(formDiv);
 				});
-				if (response.ok) {
-					alert('Inscription réussie !');
-					formDiv.remove();
-				} else {
-					alert('Erreur lors de l\'inscription');
-				}
-			} catch (error) {
-				alert("Erreur réseau ou serveur injoignable !");
-				console.error(error);
+			} else {
+				alert('Erreur lors de l\'inscription');
 			}
-		});
+		} catch (error) {
+			alert("Erreur réseau ou serveur injoignable !");
+			console.error(error);
+		}
+	});
 
-	}
-
-	// Attache les événements aux boutons du formulaire courant
-	function attachEvents() {
-		const closeBtn = document.getElementById('closeLogin');
-		closeBtn?.addEventListener('click', (e) => {
-			e.preventDefault();
-			formDiv.remove();
-		});
-		const signupBtn = document.getElementById('signupBtn');
-		signupBtn?.addEventListener('click', (e) => {
-			e.preventDefault();
-			showSignupForm();
-		});
-		const backToLogin = document.getElementById('backToLogin');
-		backToLogin?.addEventListener('click', (e) => {
-			e.preventDefault();
-			showLoginForm();
-		});
+}
 
 
-		// Fermer si on clique en dehors du formulaire
-		formDiv.addEventListener('click', (e) => {
-			if (e.target === formDiv) formDiv.remove();
-		});
-	}
+function attachEvents(formDiv: HTMLElement) {
+	const closeBtn = document.getElementById('closeLogin');
+	closeBtn?.addEventListener('click', (e) => {
+		e.preventDefault();
+		formDiv.remove();
+	});
+	const signupBtn = document.getElementById('signupBtn');
+	signupBtn?.addEventListener('click', (e) => {
+		e.preventDefault();
+		showSignupForm(formDiv);
+	});
+	const backToLogin = document.getElementById('backToLogin');
+	backToLogin?.addEventListener('click', (e) => {
+		e.preventDefault();
+		showLoginForm(formDiv);
+	});
+
+
+	// Fermer si on clique en dehors du formulaire
+	formDiv.addEventListener('click', (e) => {
+		if (e.target === formDiv) formDiv.remove();
+	});
+}
+
+loginBtn?.addEventListener('click', () => {
+	// Vérifie si le formulaire existe déjà
+	if (document.getElementById('loginForm')) return;
+
+	// Crée le conteneur du formulaire
+	const formDiv = document.createElement('div');
+	formDiv.id = 'loginForm';
+	formDiv.className = 'fixed inset-0 flex items-center justify-center bg-black bg-opacity-60 z-50';
+
+	document.body.appendChild(formDiv);
+	showLoginForm(formDiv);
 
 });
