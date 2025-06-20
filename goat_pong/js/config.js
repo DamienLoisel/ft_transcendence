@@ -26,6 +26,15 @@ const GameConfig = {
     // Score maximum pour gagner
     maxScore: 5,
     
+    // Paramètres du tournoi
+    tournamentMode: false,
+    playerCount: 4,
+    underdogBracket: false,
+    
+    // Mode ordinateur
+    computerMode: false,
+    computerDifficulty: 5,
+    
     // Contrôles
     player1Keys: { up: 'q', down: 'a' },
     player2Keys: { up: 'ArrowDown', down: 'ArrowUp' },

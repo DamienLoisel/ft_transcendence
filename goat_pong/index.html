@@ -112,6 +112,186 @@
             color: #00ffff;
             text-shadow: 0 0 5px #00ffff;
         }
+        
+        .settings-screen {
+            width: 90%;
+            max-width: 800px;
+            display: none;
+            flex-direction: column;
+            align-items: center;
+            background: rgba(0, 10, 20, 0.8);
+            padding: 20px;
+            border-radius: 10px;
+            border: 1px solid #00ffff;
+            box-shadow: 0 0 20px rgba(0, 255, 255, 0.5);
+        }
+        
+        .settings-container {
+            display: flex;
+            flex-direction: row;
+            gap: 30px;
+            width: 100%;
+            margin: 20px 0;
+            justify-content: space-between;
+            align-items: flex-start;
+        }
+        
+        .settings-left, .settings-right {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            width: 48%;
+        }
+        
+        .setting-item {
+            margin: 15px 0;
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .setting-item label {
+            margin-bottom: 5px;
+            font-size: 16px;
+        }
+        
+        .slider {
+            -webkit-appearance: none;
+            width: 100%;
+            height: 10px;
+            border-radius: 5px;
+            background: rgba(0, 255, 255, 0.2);
+            outline: none;
+            transition: all 0.3s;
+        }
+        
+        .slider::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            background: #00ffff;
+            cursor: pointer;
+            box-shadow: 0 0 10px #00ffff;
+        }
+        
+        /* Définir également la propriété standard pour la compatibilité */
+        .slider::-moz-range-thumb {
+            appearance: none;
+            -moz-appearance: none;
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            background: #00ffff;
+            cursor: pointer;
+            box-shadow: 0 0 10px #00ffff;
+            border: none;
+        }
+        
+        .controls-container {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+            margin-top: 10px;
+        }
+        
+        .control-group {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        
+        .control-input {
+            background: rgba(0, 0, 0, 0.5);
+            border: 1px solid #00ffff;
+            color: #00ffff;
+            padding: 5px;
+            margin-top: 5px;
+            text-align: center;
+            width: 80px;
+            border-radius: 5px;
+        }
+        
+        .slider::-moz-range-thumb {
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            background: #00ffff;
+            cursor: pointer;
+            box-shadow: 0 0 10px #00ffff;
+        }
+        
+        .back-button {
+            padding: 10px 20px;
+            font-size: 16px;
+            background-color: transparent;
+            color: #00ffff;
+            border: 1px solid #00ffff;
+            border-radius: 5px;
+            cursor: pointer;
+            margin-top: 15px;
+            font-family: 'Orbitron', sans-serif;
+            transition: all 0.3s;
+        }
+        
+        .back-button:hover {
+            background-color: rgba(0, 255, 255, 0.2);
+        }
+        
+        .checkbox-container {
+            flex-direction: row;
+            align-items: center;
+            justify-content: space-between;
+        }
+        
+        .checkbox-container input {
+            width: 20px;
+            height: 20px;
+            cursor: pointer;
+        }
+        
+        #tournamentScreen {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.8);
+            display: none;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            z-index: 20;
+        }
+        
+        #matchTitle {
+            font-size: 32px;
+            margin-bottom: 30px;
+            text-shadow: 0 0 10px #00ffff;
+        }
+        
+        .tournament-scores {
+            background: rgba(0, 10, 20, 0.8);
+            padding: 20px;
+            border-radius: 10px;
+            border: 1px solid #00ffff;
+            margin-bottom: 30px;
+            min-width: 300px;
+            max-height: 400px;
+            overflow-y: auto;
+        }
+        
+        .player-score {
+            display: flex;
+            justify-content: space-between;
+            padding: 10px;
+            border-bottom: 1px solid rgba(0, 255, 255, 0.3);
+        }
+        
+        .player-score:last-child {
+            border-bottom: none;
+        }
         .loading-bar {
             width: 300px;
             height: 20px;
@@ -136,22 +316,166 @@
     
     <div id="gameUI">
         <div id="scoreDisplay">0 - 0</div>
-        <div id="instructions">
-            Joueur 1: A / Q | Joueur 2: Haut / Bas
-        </div>
     </div>
     
     <div id="startScreen">
         <h1 id="gameTitle">GOAT PONG 3D</h1>
-        <button id="startButton" class="game-button">Commencer le jeu</button>
+        <div id="mainMenu">
+            <button id="play1v1Button" class="game-button">Play 1v1</button>
+            <button id="playVsComputerButton" class="game-button">Play against computer</button>
+            <button id="playTournamentButton" class="game-button">Play a tournament</button>
+        </div>
+        <div id="settingsScreen1v1" class="settings-screen" style="display: none;">
+            <h2>1v1 Settings</h2>
+            <div class="settings-container">
+                <div class="settings-left">
+                    <div class="setting-item">
+                        <label for="ballSpeed1v1">Ball Speed: <span id="ballSpeedValue1v1">5</span></label>
+                        <input type="range" id="ballSpeed1v1" min="0" max="10" value="5" class="slider">
+                    </div>
+                    <div class="setting-item">
+                        <label for="paddleWidth1v1">Paddle Width: <span id="paddleWidthValue1v1">5</span></label>
+                        <input type="range" id="paddleWidth1v1" min="0" max="10" value="5" class="slider">
+                    </div>
+                    <div class="setting-item">
+                        <label for="obstacles1v1">Obstacles: <span id="obstaclesValue1v1">5</span></label>
+                        <input type="range" id="obstacles1v1" min="0" max="10" value="5" class="slider">
+                    </div>
+                </div>
+                <div class="settings-right">
+                    <div class="setting-item">
+                        <h3>Controls</h3>
+                        <div class="controls-container">
+                            <div class="control-group">
+                                <label>Player 1 Up:</label>
+                                <input type="text" id="player1Up1v1" value="q" maxlength="1" class="control-input">
+                            </div>
+                            <div class="control-group">
+                                <label>Player 1 Down:</label>
+                                <input type="text" id="player1Down1v1" value="a" maxlength="1" class="control-input">
+                            </div>
+                            <div class="control-group">
+                                <label>Player 2 Up:</label>
+                                <input type="text" id="player2Up1v1" value="ArrowUp" class="control-input">
+                            </div>
+                            <div class="control-group">
+                                <label>Player 2 Down:</label>
+                                <input type="text" id="player2Down1v1" value="ArrowDown" class="control-input">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <button id="startGame1v1" class="game-button">Start Game</button>
+            <button id="backButton1v1" class="back-button">Back</button>
+        </div>
+        <div id="settingsScreenComputer" class="settings-screen" style="display: none;">
+            <h2>Computer Game Settings</h2>
+            <div class="settings-container">
+                <div class="settings-left">
+                    <div class="setting-item">
+                        <label for="ballSpeedComputer">Ball Speed: <span id="ballSpeedValueComputer">5</span></label>
+                        <input type="range" id="ballSpeedComputer" min="0" max="10" value="5" class="slider">
+                    </div>
+                    <div class="setting-item">
+                        <label for="paddleWidthComputer">Paddle Width: <span id="paddleWidthValueComputer">5</span></label>
+                        <input type="range" id="paddleWidthComputer" min="0" max="10" value="5" class="slider">
+                    </div>
+                    <div class="setting-item">
+                        <label for="obstaclesComputer">Obstacles: <span id="obstaclesValueComputer">5</span></label>
+                        <input type="range" id="obstaclesComputer" min="0" max="10" value="5" class="slider">
+                    </div>
+                    <div class="setting-item">
+                        <label for="computerDifficulty">Computer Difficulty: <span id="computerDifficultyValue">5</span></label>
+                        <input type="range" id="computerDifficulty" min="0" max="10" value="5" class="slider">
+                    </div>
+                </div>
+                <div class="settings-right">
+                    <div class="setting-item">
+                        <h3>Controls</h3>
+                        <div class="controls-container">
+                            <div class="control-group">
+                                <label>Player Up:</label>
+                                <input type="text" id="playerUpComputer" value="q" maxlength="1" class="control-input">
+                            </div>
+                            <div class="control-group">
+                                <label>Player Down:</label>
+                                <input type="text" id="playerDownComputer" value="a" maxlength="1" class="control-input">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <button id="startGameComputer" class="game-button">Start Game</button>
+            <button id="backButtonComputer" class="back-button">Back</button>
+        </div>
+        <div id="settingsScreenTournament" class="settings-screen" style="display: none;">
+            <h2>Tournament Settings</h2>
+            <div class="settings-container">
+                <div class="settings-left">
+                    <div class="setting-item">
+                        <label for="ballSpeedTournament">Ball Speed: <span id="ballSpeedValueTournament">5</span></label>
+                        <input type="range" id="ballSpeedTournament" min="0" max="10" value="5" class="slider">
+                    </div>
+                    <div class="setting-item">
+                        <label for="paddleWidthTournament">Paddle Width: <span id="paddleWidthValueTournament">5</span></label>
+                        <input type="range" id="paddleWidthTournament" min="0" max="10" value="5" class="slider">
+                    </div>
+                    <div class="setting-item">
+                        <label for="obstaclesTournament">Obstacles: <span id="obstaclesValueTournament">5</span></label>
+                        <input type="range" id="obstaclesTournament" min="0" max="10" value="5" class="slider">
+                    </div>
+                    <div class="setting-item">
+                        <label for="playerCount">Player Count: <span id="playerCountValue">4</span></label>
+                        <input type="range" id="playerCount" min="4" max="16" value="4" step="4" class="slider">
+                    </div>
+                    <div class="setting-item checkbox-container">
+                        <label for="underdogBracket">Underdog Bracket:</label>
+                        <input type="checkbox" id="underdogBracket">
+                    </div>
+                </div>
+                <div class="settings-right">
+                    <div class="setting-item">
+                        <h3>Controls</h3>
+                        <div class="controls-container">
+                            <div class="control-group">
+                                <label>Player 1 Up:</label>
+                                <input type="text" id="player1UpTournament" value="q" maxlength="1" class="control-input">
+                            </div>
+                            <div class="control-group">
+                                <label>Player 1 Down:</label>
+                                <input type="text" id="player1DownTournament" value="a" maxlength="1" class="control-input">
+                            </div>
+                            <div class="control-group">
+                                <label>Player 2 Up:</label>
+                                <input type="text" id="player2UpTournament" value="ArrowUp" class="control-input">
+                            </div>
+                            <div class="control-group">
+                                <label>Player 2 Down:</label>
+                                <input type="text" id="player2DownTournament" value="ArrowDown" class="control-input">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <button id="startGameTournament" class="game-button">Start Tournament</button>
+            <button id="backButtonTournament" class="back-button">Back</button>
+        </div>
         <div class="loading-bar">
             <div id="loadingProgress" class="loading-progress"></div>
         </div>
     </div>
     
+    <div id="tournamentScreen" style="display: none;">
+        <h2 id="matchTitle">Match 1: Player 1 vs Player 2</h2>
+        <div id="tournamentScores" class="tournament-scores"></div>
+        <button id="nextMatchButton" class="game-button">Next Match</button>
+    </div>
+    
     <div id="gameOverScreen">
-        <h2 id="winnerText">Joueur 1 gagne!</h2>
-        <button id="restartButton" class="game-button">Rejouer</button>
+        <h2 id="winnerText">Player 1 wins!</h2>
+        <button id="restartButton" class="game-button">Play Again</button>
+        <button id="homeButton" class="game-button">Home</button>
     </div>
 
     <!-- Babylon.js depuis CDN -->
